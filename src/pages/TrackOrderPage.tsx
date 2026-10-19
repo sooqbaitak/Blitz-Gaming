@@ -81,12 +81,9 @@ export function TrackOrderPage() {
               <p className="text-xs text-zinc-500">Customer</p>
               <p>{result.customerName}</p>
             </div>
+
             <div>
-              <p className="text-xs text-zinc-500">General area</p>
-              <p>{result.deliveryRegion ?? 'Not specified'}</p>
-            </div>
-            <div>
-              <p className="text-xs text-zinc-500">City</p>
+              <p className="text-xs text-zinc-500">City / delivery area</p>
               <p>{result.city}</p>
             </div>
             <div>

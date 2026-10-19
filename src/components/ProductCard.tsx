@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Heart, ShoppingCart } from 'lucide-react';
+import { Heart, ShoppingCart, Star } from 'lucide-react';
 import type { Product } from '../lib/types';
 import { formatPrice } from '../lib/utils';
 import { useStore } from '../context/StoreContext';
@@ -66,6 +66,12 @@ export function ProductCard({
         <h3 className="text-sm font-medium leading-snug line-clamp-2 group-hover:text-violet-300 transition min-h-[2.5rem]">
           {product.title}
         </h3>
+        <div className="flex items-center gap-1 text-[11px] text-zinc-400">
+          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+          <span>{product.ratingCount ? (product.rating ?? 0).toFixed(1) : '—'}</span>
+          <span>({product.ratingCount ?? 0})</span>
+          {(product.loyaltyPoints ?? 0) > 0 && <span className="ml-2 text-amber-300">+{product.loyaltyPoints} pts</span>}
+        </div>
         <div className="mt-auto pt-2 flex items-end justify-between gap-2">
           <div>
             <div className="text-lg font-bold text-white">{formatPrice(product.price)}</div>

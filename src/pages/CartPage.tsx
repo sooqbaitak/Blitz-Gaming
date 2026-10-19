@@ -6,7 +6,7 @@ import { formatPrice, calcDeliveryFee } from '../lib/utils';
 export function CartPage() {
   const { cart, products, updateCartQty, removeFromCart, cartSubtotal, variantsKey, clearCart } =
     useStore();
-  const delivery = calcDeliveryFee(cartSubtotal);
+  const delivery = calcDeliveryFee('Hebron');
   const total = cartSubtotal + delivery;
 
   return (
@@ -111,15 +111,10 @@ export function CartPage() {
               </div>
               <div className="flex justify-between text-zinc-400">
                 <span>Delivery</span>
-                <span>{delivery === 0 ? 'FREE' : formatPrice(delivery)}</span>
+                <span>{formatPrice(delivery)}</span>
               </div>
-              {delivery > 0 && (
-                <p className="text-[11px] text-zinc-600">
-                  Free delivery on orders from 1,000.00 ₪
-                </p>
-              )}
               <div className="flex justify-between font-bold text-lg pt-3 border-t border-white/10">
-                <span>Total</span>
+                <span>Estimated total (West Bank)</span>
                 <span>{formatPrice(total)}</span>
               </div>
             </div>

@@ -10,6 +10,7 @@ import { CheckoutPage } from './pages/CheckoutPage';
 import { TrackOrderPage } from './pages/TrackOrderPage';
 import { BuildPCPage } from './pages/BuildPCPage';
 import { FavoritesPage } from './pages/FavoritesPage';
+import { AccountPage } from './pages/AccountPage';
 import {
   AboutPage,
   ShippingPage,
@@ -43,6 +44,7 @@ export default function App() {
             <Route path="track" element={<TrackOrderPage />} />
             <Route path="build" element={<BuildPCPage />} />
             <Route path="favorites" element={<FavoritesPage />} />
+            <Route path="account" element={<AccountPage />} />
             <Route path="brands" element={<BrandsPage />} />
             <Route path="offers" element={<OffersPage />} />
             <Route path="about" element={<AboutPage />} />

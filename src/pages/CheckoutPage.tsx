@@ -4,7 +4,7 @@ import { Banknote, CheckCircle2 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { formatPrice, calcDeliveryFee } from '../lib/utils';
 import { buildWhatsAppOrderLink } from '../lib/storage';
-import type { DeliveryRegion, Order } from '../lib/types';
+import type { Order, PreferredLanguage } from '../lib/types';
 
 const CITIES = [
   'Hebron',
@@ -16,24 +16,25 @@ const CITIES = [
   'Qalqilya',
   'Jericho',
   'Jerusalem',
+  '1948 Areas',
   'Other',
 ];
 
 export function CheckoutPage() {
-  const { cart, products, cartSubtotal, placeOrder, variantsKey, storeInfo } = useStore();
+  const { cart, products, cartSubtotal, placeOrder, variantsKey, language, setLanguage } = useStore();
   const navigate = useNavigate();
   const [order, setOrder] = useState<Order | null>(null);
   const [error, setError] = useState('');
   const [form, setForm] = useState({
     customerName: '',
     customerPhone: '',
-    deliveryRegion: 'West Bank' as DeliveryRegion,
     city: 'Hebron',
+    preferredLanguage: language,
     address: '',
     notes: '',
   });
 
-  const delivery = calcDeliveryFee(cartSubtotal);
+  const delivery = calcDeliveryFee(form.city);
   const total = cartSubtotal + delivery;
 
   if (cart.length === 0 && !order) {
@@ -66,10 +67,9 @@ export function CheckoutPage() {
             Total: <strong className="text-white">{formatPrice(order.total)}</strong> · Cash on
             Delivery
           </p>
-          <p className="mt-2 text-xs text-zinc-500">Delivery area: {order.deliveryRegion}</p>
+          <p className="mt-2 text-xs text-zinc-500">Delivery location: {order.city}</p>
           <p className="mt-2 text-xs text-zinc-500">
-            Order details are prepared for store notification. Please use WhatsApp below if you want
-            to confirm directly with us.
+            Please confirm your delivery details with us using WhatsApp if you need help. Keep your order code for any follow-up.
           </p>
           <div className="mt-8 flex flex-col gap-3">
             <a
@@ -144,21 +144,9 @@ export function CheckoutPage() {
               </div>
             </div>
             <div>
-              <label className="text-xs text-zinc-500">General area *</label>
+              <label className="text-xs text-zinc-500">City / delivery area *</label>
               <select
                 required
-                value={form.deliveryRegion}
-                onChange={(e) => setForm({ ...form, deliveryRegion: e.target.value as DeliveryRegion })}
-                className="mt-1 w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50"
-              >
-                <option value="West Bank">West Bank</option>
-                <option value="Jerusalem">Jerusalem</option>
-                <option value="1948 Areas">1948 Areas</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-xs text-zinc-500">City *</label>
-              <select
                 value={form.city}
                 onChange={(e) => setForm({ ...form, city: e.target.value })}
                 className="mt-1 w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50"
@@ -168,6 +156,19 @@ export function CheckoutPage() {
                     {c}
                   </option>
                 ))}
+              </select>
+            </div>
+            <div>
+              <label className="text-xs text-zinc-500">Preferred language *</label>
+              <select
+                required
+                value={form.preferredLanguage}
+                onChange={(e) => { const nextLanguage = e.target.value as PreferredLanguage; setForm({ ...form, preferredLanguage: nextLanguage }); setLanguage(nextLanguage); }}
+                className="mt-1 w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500/50"
+              >
+                <option value="English">English</option>
+                <option value="Arabic">العربية (Arabic)</option>
+                <option value="Hebrew">עברית (Hebrew)</option>
               </select>
             </div>
             <div>
@@ -198,8 +199,7 @@ export function CheckoutPage() {
             <div>
               <h3 className="font-semibold text-amber-200">Cash on Delivery</h3>
               <p className="text-sm text-zinc-400 mt-1">
-                Pay when you receive your order. No advance payment required. Orders are notified to{' '}
-                {storeInfo.email}.
+                Pay when you receive your order. No advance payment required.
               </p>
             </div>
           </div>
@@ -240,7 +240,7 @@ export function CheckoutPage() {
               </div>
               <div className="flex justify-between text-zinc-400">
                 <span>Delivery</span>
-                <span>{delivery === 0 ? 'FREE' : formatPrice(delivery)}</span>
+                <span>{formatPrice(delivery)}</span>
               </div>
               <div className="flex justify-between font-bold text-base pt-2">
                 <span>Total</span>

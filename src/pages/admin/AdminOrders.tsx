@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Check, Trash2, Truck, PackageCheck, XCircle, Mail } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { formatPrice } from '../../lib/utils';
@@ -16,8 +17,12 @@ const FILTERS: { id: string; label: string }[] = [
 
 export function AdminOrders() {
   const { orders, updateOrderStatus, deleteOrder, storeInfo } = useStore();
+  const [searchParams] = useSearchParams();
   const [filter, setFilter] = useState('all');
-  const [selected, setSelected] = useState<Order | null>(null);
+  const [selected, setSelected] = useState<Order | null>(() => {
+    const orderCode = searchParams.get('order');
+    return orderCode ? orders.find((order) => order.code.toUpperCase() === orderCode.toUpperCase() || order.id === orderCode) ?? null : null;
+  });
 
   const list = useMemo(() => {
     if (filter === 'all') return orders;
@@ -83,7 +88,7 @@ export function AdminOrders() {
                   <span className="font-mono font-bold text-violet-300">{o.code}</span>
                   <span className="ml-2 text-sm">{o.customerName}</span>
                   <p className="text-xs text-zinc-500 mt-1">
-                    {o.deliveryRegion ? `${o.deliveryRegion} · ` : ''}{o.city} · {new Date(o.createdAt).toLocaleString()} · {o.items.length} item(s)
+                    {o.city} · {new Date(o.createdAt).toLocaleString()} · {o.items.length} item(s)
                   </p>
                 </div>
                 <div className="text-right shrink-0">
@@ -116,10 +121,10 @@ export function AdminOrders() {
                   </a>
                 </p>
                 <p>
-                  <span className="text-zinc-500">General area:</span> {selected.deliveryRegion ?? 'Not specified (older order)'}
+                  <span className="text-zinc-500">City / delivery area:</span> {selected.city}
                 </p>
                 <p>
-                  <span className="text-zinc-500">City:</span> {selected.city}
+                  <span className="text-zinc-500">Preferred language:</span> {selected.preferredLanguage ?? 'English (older order)'}
                 </p>
                 <p>
                   <span className="text-zinc-500">Address:</span> {selected.address}
@@ -132,6 +137,8 @@ export function AdminOrders() {
                 <p>
                   <span className="text-zinc-500">Payment:</span> Cash on Delivery
                 </p>
+                {selected.customerAccountKey && <p><span className="text-zinc-500">Account-linked order:</span> Yes</p>}
+                {(selected.loyaltyPointsAwarded ?? 0) > 0 && <p className="text-amber-300"><span className="text-zinc-500">Loyalty points awarded:</span> {selected.loyaltyPointsAwarded}</p>}
               </div>
 
               <div className="border-t border-white/10 pt-3 space-y-2">
@@ -152,7 +159,7 @@ export function AdminOrders() {
                 ))}
                 <div className="flex justify-between text-sm text-zinc-400 pt-2">
                   <span>Delivery</span>
-                  <span>{selected.deliveryFee === 0 ? 'FREE' : formatPrice(selected.deliveryFee)}</span>
+                  <span>{formatPrice(selected.deliveryFee)}</span>
                 </div>
                 <div className="flex justify-between font-bold border-t border-white/10 pt-2">
                   <span>Total</span>

@@ -6,7 +6,6 @@ import { formatPrice } from '../../lib/utils';
 export function AdminDashboard() {
   const { products, orders } = useStore();
   const pending = orders.filter((o) => o.status === 'pending');
-  const approved = orders.filter((o) => o.status === 'approved' || o.status === 'shipped');
   // Cash-on-delivery sales are counted as revenue only after delivery is completed.
   const revenue = orders
     .filter((o) => o.status === 'delivered')

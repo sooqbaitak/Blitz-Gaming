@@ -99,7 +99,7 @@ export function Footer() {
             </li>
           </ul>
           <p className="mt-4 text-xs text-zinc-600">
-            Cash on delivery · Free delivery from 1,000.00 ₪
+            Cash on delivery · Delivery from ₪20 (Jerusalem ₪50, 1948 Areas ₪70)
           </p>
         </div>
       </div>

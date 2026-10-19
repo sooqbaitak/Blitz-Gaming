@@ -32,9 +32,16 @@ export function generateOrderCode(sequence: number): string {
   return `BG${num}`;
 }
 
-export const FREE_DELIVERY_FROM = 1000;
-export const DEFAULT_DELIVERY_FEE = 25;
+export const DELIVERY_FEES = {
+  default: 20,
+  jerusalem: 50,
+  areas1948: 70,
+} as const;
 
-export function calcDeliveryFee(subtotal: number): number {
-  return subtotal >= FREE_DELIVERY_FROM ? 0 : DEFAULT_DELIVERY_FEE;
+/** Calculate delivery by the buyer's selected city/area, not order subtotal. */
+export function calcDeliveryFee(cityOrArea = ''): number {
+  const location = cityOrArea.trim().toLocaleLowerCase();
+  if (location === 'jerusalem') return DELIVERY_FEES.jerusalem;
+  if (location === '1948 areas') return DELIVERY_FEES.areas1948;
+  return DELIVERY_FEES.default;
 }

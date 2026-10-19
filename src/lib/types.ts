@@ -26,6 +26,10 @@ export interface Product {
   images?: string[];
   featured?: boolean;
   specs?: Record<string, string>;
+  shippingWarranty?: string;
+  loyaltyPoints?: number;
+  rating?: number;
+  ratingCount?: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -39,7 +43,8 @@ export interface CartItem {
 
 export type OrderStatus = 'pending' | 'approved' | 'shipped' | 'delivered' | 'cancelled' | 'deleted';
 
-export type DeliveryRegion = 'West Bank' | 'Jerusalem' | '1948 Areas';
+export type DeliveryRegion = 'West Bank' | 'Jerusalem' | '1948 Areas'; // Legacy field for existing browser-stored orders.
+export type PreferredLanguage = 'English' | 'Arabic' | 'Hebrew';
 
 export interface OrderItem {
   productId: string;
@@ -48,6 +53,7 @@ export interface OrderItem {
   unitPrice: number;
   selectedVariants: Record<string, string>;
   brand: string;
+  loyaltyPointsEach?: number;
 }
 
 export interface Order {
@@ -59,9 +65,13 @@ export interface Order {
   total: number;
   customerName: string;
   customerPhone: string;
-  /** Missing on older orders created before the general-area selector was added. */
+  /** @deprecated Legacy value retained only for older browser-stored orders. */
   deliveryRegion?: DeliveryRegion;
   city: string;
+  preferredLanguage?: PreferredLanguage;
+  customerAccountKey?: string;
+  loyaltyPointsAwarded?: number;
+  loyaltyAwardedAt?: string;
   address: string;
   notes?: string;
   paymentMethod: 'cod';
@@ -80,6 +90,22 @@ export interface CategoryNode {
 
 export interface StoreSettings {
   storeName: string;
+  tagline: string;
+  logoUrl: string;
+  heroImage: string;
+  heroTitle: string;
+  heroAccentText: string;
+  heroDescription: string;
+  accentColor: string;
+  headingColor: string;
+  bodyTextColor: string;
+  fontFamily: string;
+  baseFontSize: number;
+  homeSectionOrder: string[];
+  homeGridColumns: number;
+  pageContent: Record<string, string>;
+  rewardThreshold: number;
+  rewardDescription: string;
   whatsapp: string;
   email: string;
   facebook: string;

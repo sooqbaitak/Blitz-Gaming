@@ -5,7 +5,7 @@ import { formatPrice, calcDeliveryFee } from '../lib/utils';
 
 export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { cart, products, updateCartQty, removeFromCart, cartSubtotal, variantsKey } = useStore();
-  const delivery = calcDeliveryFee(cartSubtotal);
+  const delivery = calcDeliveryFee('Hebron');
   const total = cartSubtotal + delivery;
 
   if (!open) return null;
@@ -94,11 +94,12 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
               <span>{formatPrice(cartSubtotal)}</span>
             </div>
             <div className="flex justify-between text-sm text-zinc-400">
-              <span>Delivery</span>
-              <span>{delivery === 0 ? 'FREE' : formatPrice(delivery)}</span>
+              <span>Delivery (estimate)</span>
+              <span>{formatPrice(delivery)}+</span>
             </div>
+            <p className="text-[11px] text-zinc-600">West Bank ₪20 · Jerusalem ₪50 · 1948 Areas ₪70. Exact fee is based on your selection at checkout.</p>
             <div className="flex justify-between font-semibold text-lg">
-              <span>Total</span>
+              <span>Estimated total</span>
               <span>{formatPrice(total)}</span>
             </div>
             <Link

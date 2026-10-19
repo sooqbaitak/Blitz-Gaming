@@ -279,7 +279,7 @@ export const seedProducts: Product[] = [
     featured: true,
     image: '/images/cat-monitor.jpg',
     tags: ['aoc', 'qhd', 'gaming-monitor'],
-    specs: { Size: '27\"', Panel: 'QHD Gaming' },
+    specs: { Size: '27"', Panel: 'QHD Gaming' },
   }),
   p({
     id: 'mon-aorus-co49dq',
@@ -291,7 +291,7 @@ export const seedProducts: Product[] = [
     featured: true,
     image: '/images/cat-monitor.jpg',
     tags: ['aorus', 'oled', 'ultrawide', '144hz'],
-    specs: { Size: '49\"', Panel: 'DQHD OLED', Refresh: '144Hz', Response: '0.03ms' },
+    specs: { Size: '49"', Panel: 'DQHD OLED', Refresh: '144Hz', Response: '0.03ms' },
   }),
   p({
     id: 'mon-aorus-fo27q5p',
@@ -301,7 +301,7 @@ export const seedProducts: Product[] = [
     category: 'monitors',
     image: '/images/cat-monitor.jpg',
     tags: ['aorus', 'qhd', 'gaming-monitor'],
-    specs: { Size: '27\"', Series: 'AORUS' },
+    specs: { Size: '27"', Series: 'AORUS' },
   }),
   p({
     id: 'mon-aorus-fo32u2',
@@ -311,7 +311,7 @@ export const seedProducts: Product[] = [
     category: 'monitors',
     image: '/images/cat-monitor.jpg',
     tags: ['aorus', '4k', 'gaming-monitor'],
-    specs: { Size: '32\"', Series: 'AORUS' },
+    specs: { Size: '32"', Series: 'AORUS' },
   }),
   // —— PC Cases ——
   p({

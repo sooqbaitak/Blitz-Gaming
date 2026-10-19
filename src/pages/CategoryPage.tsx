@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { findCategory, flattenCategories } from '../lib/categories';
@@ -20,16 +19,14 @@ export function CategoryPage() {
   const { products } = useStore();
   const category = findCategory(slug);
 
-  const filtered = useMemo(() => {
-    const related = PARENT_MAP[slug] ?? [slug];
-    return products.filter(
-      (p) =>
-        related.includes(p.category) ||
-        (p.subcategory && related.includes(p.subcategory)) ||
-        p.category === slug ||
-        p.subcategory === slug,
-    );
-  }, [products, slug]);
+  const related = PARENT_MAP[slug] ?? [slug];
+  const filtered = products.filter(
+    (p) =>
+      related.includes(p.category) ||
+      (p.subcategory && related.includes(p.subcategory)) ||
+      p.category === slug ||
+      p.subcategory === slug,
+  );
 
   const children = category?.children ?? [];
   const all = flattenCategories();

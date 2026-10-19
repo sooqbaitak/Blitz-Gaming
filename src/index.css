@@ -11,14 +11,16 @@ html {
 
 body {
   margin: 0;
-  font-family: var(--font-sans);
+  font-family: var(--site-font-family, var(--font-sans));
+  font-size: var(--site-base-font-size, 16px);
   background: #0a0b0f;
-  color: #f4f4f5;
+  color: var(--site-text-color, #f4f4f5);
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3 {
-  font-family: var(--font-display);
+  font-family: var(--site-font-family, var(--font-display));
+  color: var(--site-heading-color, inherit);
 }
 
 #root {
@@ -44,4 +46,12 @@ h1, h2, h3 {
 ::selection {
   background: rgba(139, 92, 246, 0.4);
   color: white;
+}
+
+/* Runtime site customization configured in the admin page editor. */
+:root { --site-accent: #8b5cf6; --site-base-font-size: 16px; }
+
+/* Product grids keep two columns on narrow screens and use the admin-selected count on desktop. */
+@media (min-width: 768px) {
+  .product-grid { grid-template-columns: repeat(var(--product-grid-columns, 4), minmax(0, 1fr)); }
 }

@@ -12,13 +12,14 @@ import {
   Truck,
   ShieldCheck,
   Banknote,
+  CircleUserRound,
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { categories } from '../lib/categories';
 import { formatPrice } from '../lib/utils';
 
 export function Header({ onOpenCart }: { onOpenCart: () => void }) {
-  const { cartCount, cartSubtotal, favorites, storeInfo } = useStore();
+  const { cartCount, cartSubtotal, favorites, storeInfo, siteSettings, language, setLanguage } = useStore();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [catOpen, setCatOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -64,6 +65,12 @@ export function Header({ onOpenCart }: { onOpenCart: () => void }) {
             </span>
           </div>
           <div className="flex items-center gap-3">
+            <label className="flex items-center gap-1.5" title="Preferred language">
+              <span className="sr-only">Preferred language</span>
+              <select aria-label="Preferred language" value={language} onChange={(e) => setLanguage(e.target.value as 'English' | 'Arabic' | 'Hebrew')} className="bg-white/5 border border-white/10 rounded-lg px-2 py-1.5 text-xs text-zinc-200 focus:outline-none focus:border-violet-500">
+                <option value="English">English</option><option value="Arabic">العربية</option><option value="Hebrew">עברית</option>
+              </select>
+            </label>
             <Link to="/track" className="hover:text-white transition">
               Track order
             </Link>
@@ -87,12 +94,14 @@ export function Header({ onOpenCart }: { onOpenCart: () => void }) {
           </button>
 
           <Link to="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 via-fuchsia-500 to-amber-400 flex items-center justify-center font-black text-sm shadow-lg shadow-violet-500/30">
-              BG
-            </div>
+            {siteSettings.logoUrl ? (
+              <img src={siteSettings.logoUrl} alt={`${siteSettings.storeName} logo`} className="w-10 h-10 rounded-xl object-contain bg-white/5" />
+            ) : (
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 via-fuchsia-500 to-amber-400 flex items-center justify-center font-black text-sm shadow-lg shadow-violet-500/30">BG</div>
+            )}
             <div className="leading-tight">
-              <div className="font-bold text-lg tracking-tight">Blitz Gaming</div>
-              <div className="text-[10px] uppercase tracking-widest text-zinc-500">Hebron PC Store</div>
+              <div className="font-bold text-lg tracking-tight">{siteSettings.storeName}</div>
+              <div className="text-[10px] uppercase tracking-widest text-zinc-500">{siteSettings.tagline}</div>
             </div>
           </Link>
 
@@ -109,6 +118,14 @@ export function Header({ onOpenCart }: { onOpenCart: () => void }) {
           </form>
 
           <div className="flex items-center gap-1 ml-auto">
+            <Link
+              to="/account"
+              className="p-2.5 rounded-xl hover:bg-white/5 transition"
+              aria-label="Your account"
+              title="Your account"
+            >
+              <CircleUserRound className="w-5 h-5" />
+            </Link>
             <Link
               to="/favorites"
               className="relative p-2.5 rounded-xl hover:bg-white/5 transition"
@@ -237,6 +254,7 @@ export function Header({ onOpenCart }: { onOpenCart: () => void }) {
                 { to: '/offers', label: 'Offers' },
                 { to: '/brands', label: 'Brands' },
                 { to: '/track', label: 'Track order' },
+                { to: '/account', label: 'My account' },
                 { to: '/cart', label: 'Cart' },
                 { to: '/support', label: 'Support' },
                 { to: '/about', label: 'About us' },
